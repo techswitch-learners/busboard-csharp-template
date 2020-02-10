@@ -12,14 +12,15 @@ namespace BusBoard
         static void Main(string[] args)
         {
             var client = new RestClient("https://api.tfl.gov.uk");
-            client.Authenticator = new HttpBasicAuthenticator("f8163132", "fc375759d5162e056d8437f676e78aef");
             
             var postcodeClient = new RestClient("https://api.postcodes.io");
 
             Prompts busCodePrompt = new Prompts();
             var busStop = busCodePrompt.GetUserInput("Type a bus stop code to see the next 5 buses at that stop");
 
-            var nextFiveBusesRequest = new RestRequest($"/StopPoint/{busStop}/Arrivals", DataFormat.Json);
+            var nextFiveBusesRequest = new RestRequest($"/StopPoint/{busStop}/Arrivals", DataFormat.Json)
+                .AddQueryParameter("app_id", "f8163132")
+                .AddQueryParameter("app_key", Environment.GetEnvironmentVariable("TFL_APP_KEY"));
             var nextFiveBusesResponse = client.Get<List<Bus>>(nextFiveBusesRequest);
 
             var data = nextFiveBusesResponse.Data;
