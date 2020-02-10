@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -10,7 +13,7 @@ namespace BusBoard
         {
             Console.WriteLine("Hello World!");
             
-            var client = new RestClient("https://api.tfl.gov.uk/");
+            var client = new RestClient("https://api.tfl.gov.uk");
             client.Authenticator = new HttpBasicAuthenticator("f8163132", "fc375759d5162e056d8437f676e78aef");
 
             //var request = new RestRequest("StopPoint/490008660N", DataFormat.Json);
@@ -20,17 +23,22 @@ namespace BusBoard
             Console.WriteLine("Type a bus stop code to see the next 5 buses at that stop");
             var busStop = Console.ReadLine();
             
-            var nextFiveBusesRequest = new RestRequest($"StopPoint/{busStop}", DataFormat.Json);
-            var nextFiveBusesResponse = client.Get(nextFiveBusesRequest);
+            var nextFiveBusesRequest = new RestRequest($"/StopPoint/{busStop}/Arrivals", DataFormat.Json);
+            var nextFiveBusesResponse = client.Get<List<Bus>>(nextFiveBusesRequest);
 
-            var responseString = nextFiveBusesResponse.ToString();
+            var data = nextFiveBusesResponse.Data;
+            var fiveBuses = data.Take(5);
 
-            foreach (var word in responseString)
+            foreach (var bus in fiveBuses)
             {
-                Console.Write(word);
+                Console.WriteLine(bus.LineName);
             }
-
             
+            /*foreach (var item in nextFiveBusesResponse.Data)
+            {
+                var lineName = item.LineName;
+                Console.WriteLine(lineName);
+            }*/
         }
     }
 }
