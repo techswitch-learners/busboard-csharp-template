@@ -11,25 +11,20 @@ namespace BusBoard
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            
             var client = new RestClient("https://api.tfl.gov.uk");
             client.Authenticator = new HttpBasicAuthenticator("f8163132", "fc375759d5162e056d8437f676e78aef");
-
-            //var request = new RestRequest("StopPoint/490008660N", DataFormat.Json);
-
-            //var response = client.Get(request);
             
-            Console.WriteLine("Type a bus stop code to see the next 5 buses at that stop");
-            var busStop = Console.ReadLine();
-            
+            var postcodeClient = new RestClient("https://api.postcodes.io");
+
+            Prompts busCodePrompt = new Prompts();
+            var busStop = busCodePrompt.GetUserInput("Type a bus stop code to see the next 5 buses at that stop");
+
             var nextFiveBusesRequest = new RestRequest($"/StopPoint/{busStop}/Arrivals", DataFormat.Json);
             var nextFiveBusesResponse = client.Get<List<Bus>>(nextFiveBusesRequest);
 
             var data = nextFiveBusesResponse.Data;
-            var fiveBuses = data.Take(5);
-
-            foreach (var bus in fiveBuses)
+            
+            foreach (var bus in data)
             {
                 Console.WriteLine(bus.LineName);
             }
@@ -39,6 +34,13 @@ namespace BusBoard
                 var lineName = item.LineName;
                 Console.WriteLine(lineName);
             }*/
+            
+            Prompts postCodePrompt = new Prompts();
+            var postcode = postCodePrompt.GetUserInput("Enter your postcode");
+
+            var postcodeLatLonRequest = new RestRequest($"/postcodes/{postcode}");
+            var postcodeLatLonResponse = client.Get<List<Postcode>>(postcodeLatLonRequest);
+            Console.WriteLine(postcodeLatLonResponse);
         }
-    }
+    } 
 }
