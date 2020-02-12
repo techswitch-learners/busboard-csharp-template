@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBoard.ConsoleApp", "BusB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBoard.WebApp", "BusBoard.WebApp\BusBoard.WebApp.csproj", "{447CA9BC-33EA-4842-AF78-31E15338380D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{E7CD19FF-10E4-47AC-81B6-6CFDA76ED4CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBoard.SharedLogic", "BusBoard.SharedLogic\BusBoard.SharedLogic.csproj", "{E7CD19FF-10E4-47AC-81B6-6CFDA76ED4CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
